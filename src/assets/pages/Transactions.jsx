@@ -368,18 +368,20 @@ function Transactions() {
                 {hasMore && (
                   <button
                     onClick={() => setVisibleCount(v => v + 8)}
-                    className="px-4 py-2 text-sm font-semibold rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-700 transition-all shadow-sm"
+                    className="px-4 py-2 text-sm font-bold rounded-xl border border-gray-200 dark:border-gray-700 text-blue-600 dark:text-blue-500 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all flex items-center gap-2"
                   >
                     Show More ↓
                   </button>
+
                 )}
                 {visibleCount > 8 && (
                   <button
                     onClick={() => setVisibleCount(8)}
-                    className="px-4 py-2 text-sm font-semibold rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all shadow-sm"
+                    className="px-4 py-2 text-sm font-bold rounded-xl border border-gray-200 dark:border-gray-700 text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all"
                   >
                     Show Less ↑
                   </button>
+
                 )}
               </div>
             </div>

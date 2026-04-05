@@ -245,8 +245,8 @@ function Profile() {
                 <div className="flex justify-between items-center">
                   <label className="text-sm font-medium text-gray-600 dark:text-gray-400">Location</label>
                   {editMode && (
-                    <button 
-                      onClick={autoDetectLocation} 
+                    <button
+                      onClick={autoDetectLocation}
                       disabled={isDetectingLocation}
                       className="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-700 font-medium flex items-center gap-1 disabled:opacity-50 transition"
                       title="Detect my location"
@@ -333,9 +333,8 @@ function Profile() {
       {toast && (
         <div
           style={{ position: 'fixed', bottom: '1.5rem', right: '1.5rem', zIndex: 9999, transition: 'all 0.3s' }}
-          className={`flex items-center gap-3 px-5 py-3.5 rounded-2xl shadow-2xl text-white text-sm font-medium animate-in slide-in-from-bottom-4 duration-300 ${
-            toast.type === 'success' ? 'bg-gray-900 dark:bg-gray-800' : 'bg-red-600'
-          }`}
+          className={`flex items-center gap-3 px-5 py-3.5 rounded-2xl shadow-2xl text-white text-sm font-medium animate-in slide-in-from-bottom-4 duration-300 ${toast.type === 'success' ? 'bg-gray-900 dark:bg-gray-800' : 'bg-red-600'
+            }`}
         >
           {toast.type === 'success'
             ? <FiCheckCircle className="text-green-400 shrink-0" size={18} />
@@ -351,17 +350,17 @@ function Profile() {
           <div className="bg-white dark:bg-gray-900 rounded-2xl w-full max-w-md shadow-2xl overflow-hidden border border-gray-200 dark:border-gray-800 animate-in zoom-in-95 duration-300">
             <div className="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-800 bg-slate-50 dark:bg-gray-800/50">
               <h3 className="text-lg font-bold text-slate-900 dark:text-white">Choose an Avatar</h3>
-              <button 
-                onClick={() => setIsAvatarModalOpen(false)} 
+              <button
+                onClick={() => setIsAvatarModalOpen(false)}
                 className="p-2 text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full transition"
               >
                 <FiX size={20} />
               </button>
             </div>
-            
+
             <div className="p-6 grid grid-cols-3 gap-4">
               {/* Default Avatar option */}
-              <div 
+              <div
                 onClick={() => {
                   const newProfile = { ...profile, avatar: "" };
                   setProfile(newProfile);
@@ -369,20 +368,19 @@ function Profile() {
                   window.dispatchEvent(new Event("profileUpdated"));
                   setIsAvatarModalOpen(false);
                 }}
-                className={`flex flex-col items-center gap-2 cursor-pointer group p-2 rounded-xl transition-all ${
-                  !profile.avatar ? "ring-2 ring-blue-500 bg-blue-50 dark:bg-blue-900/20" : "hover:bg-gray-50 dark:hover:bg-gray-800"
-                }`}
+                className={`flex flex-col items-center gap-2 cursor-pointer group p-2 rounded-xl transition-all ${!profile.avatar ? "ring-2 ring-blue-500 bg-blue-50 dark:bg-blue-900/20" : "hover:bg-gray-50 dark:hover:bg-gray-800"
+                  }`}
               >
-                <img 
-                  src={`https://api.dicebear.com/7.x/notionists/svg?seed=${profile.name || "User"}&backgroundColor=e2e8f0`} 
-                  alt="Default Format" 
-                  className="w-16 h-16 rounded-full object-cover shadow-sm group-hover:scale-105 transition-transform" 
+                <img
+                  src={`https://api.dicebear.com/7.x/notionists/svg?seed=${profile.name || "User"}&backgroundColor=e2e8f0`}
+                  alt="Default Format"
+                  className="w-16 h-16 rounded-full object-cover shadow-sm group-hover:scale-105 transition-transform"
                 />
                 <span className="text-xs font-medium text-gray-600 dark:text-gray-400">Default</span>
               </div>
 
               {AVATAR_OPTIONS.map((opt) => (
-                <div 
+                <div
                   key={opt.id}
                   onClick={() => {
                     const newProfile = { ...profile, avatar: opt.url };
@@ -391,18 +389,17 @@ function Profile() {
                     window.dispatchEvent(new Event("profileUpdated"));
                     setIsAvatarModalOpen(false);
                   }}
-                  className={`flex flex-col items-center gap-2 cursor-pointer group p-2 rounded-xl transition-all ${
-                    profile.avatar === opt.url ? "ring-2 ring-blue-500 bg-blue-50 dark:bg-blue-900/20" : "hover:bg-gray-50 dark:hover:bg-gray-800"
-                  }`}
+                  className={`flex flex-col items-center gap-2 cursor-pointer group p-2 rounded-xl transition-all ${profile.avatar === opt.url ? "ring-2 ring-blue-500 bg-blue-50 dark:bg-blue-900/20" : "hover:bg-gray-50 dark:hover:bg-gray-800"
+                    }`}
                 >
                   <img src={opt.url} alt={opt.label} className="w-16 h-16 rounded-full object-cover shadow-sm group-hover:scale-105 transition-transform" />
                   <span className="text-xs font-medium text-gray-600 dark:text-gray-400">{opt.label}</span>
                 </div>
               ))}
             </div>
-            
+
             <div className="p-5 border-t border-gray-200 dark:border-gray-800 bg-slate-50 dark:bg-gray-800/50 flex justify-end">
-              <button 
+              <button
                 onClick={() => setIsAvatarModalOpen(false)}
                 className="px-5 py-2 text-sm font-medium bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 text-slate-700 dark:text-white rounded-lg transition"
               >
@@ -427,8 +424,8 @@ function Profile() {
 
 // ─── Change Password Modal ────────────────────────────────────────────────────
 function ChangePasswordModal({ onClose, onSuccess, onError }) {
-  const [fields, setFields] = useState({ current: '', newPwd: '', confirm: '' });
-  const [show, setShow] = useState({ current: false, newPwd: false, confirm: false });
+  const [fields, setFields] = useState({ newPwd: '', confirm: '' });
+  const [show, setShow] = useState({ newPwd: false, confirm: false });
   const [loading, setLoading] = useState(false);
 
   const getStrength = (pwd) => {
@@ -455,8 +452,7 @@ function ChangePasswordModal({ onClose, onSuccess, onError }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!fields.current) { onError('Please enter your current password.'); return; }
-    if (fields.current !== getStoredPassword()) { onError('Current password is incorrect.'); return; }
+    if (!fields.newPwd) { onError('Please enter a new password.'); return; }
     if (fields.newPwd.length < 8) { onError('New password must be at least 8 characters.'); return; }
     if (fields.newPwd !== fields.confirm) { onError('Passwords do not match.'); return; }
     setLoading(true);
@@ -490,24 +486,6 @@ function ChangePasswordModal({ onClose, onSuccess, onError }) {
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
-          {/* Current Password */}
-          <div className="space-y-1.5">
-            <label className="text-sm font-medium text-gray-600 dark:text-gray-400">Current Password</label>
-            <div className="relative">
-              <input
-                name="current"
-                type={show.current ? 'text' : 'password'}
-                value={fields.current}
-                onChange={handleChange}
-                placeholder="Enter current password"
-                className={inputClass}
-              />
-              <button type="button" onClick={() => toggleShow('current')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition">
-                {show.current ? <FiEyeOff size={16} /> : <FiEye size={16} />}
-              </button>
-            </div>
-          </div>
-
           {/* New Password */}
           <div className="space-y-1.5">
             <label className="text-sm font-medium text-gray-600 dark:text-gray-400">New Password</label>
@@ -517,7 +495,7 @@ function ChangePasswordModal({ onClose, onSuccess, onError }) {
                 type={show.newPwd ? 'text' : 'password'}
                 value={fields.newPwd}
                 onChange={handleChange}
-                placeholder="Min. 8 characters"
+                placeholder=""
                 className={inputClass}
               />
               <button type="button" onClick={() => toggleShow('newPwd')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition">
@@ -528,15 +506,13 @@ function ChangePasswordModal({ onClose, onSuccess, onError }) {
             {fields.newPwd && (
               <div className="space-y-1">
                 <div className="flex gap-1">
-                  {[1,2,3,4].map(i => (
-                    <div key={i} className={`h-1 flex-1 rounded-full transition-all duration-300 ${
-                      i <= strength.score ? strength.color : 'bg-gray-200 dark:bg-gray-700'
-                    }`} />
+                  {[1, 2, 3, 4].map(i => (
+                    <div key={i} className={`h-1 flex-1 rounded-full transition-all duration-300 ${i <= strength.score ? strength.color : 'bg-gray-200 dark:bg-gray-700'
+                      }`} />
                   ))}
                 </div>
-                <p className={`text-xs font-medium ${
-                  strength.score <= 1 ? 'text-red-500' : strength.score === 2 ? 'text-yellow-500' : strength.score === 3 ? 'text-blue-500' : 'text-green-500'
-                }`}>{strength.label}</p>
+                <p className={`text-xs font-medium ${strength.score <= 1 ? 'text-red-500' : strength.score === 2 ? 'text-yellow-500' : strength.score === 3 ? 'text-blue-500' : 'text-green-500'
+                  }`}>{strength.label}</p>
               </div>
             )}
           </div>
@@ -550,10 +526,9 @@ function ChangePasswordModal({ onClose, onSuccess, onError }) {
                 type={show.confirm ? 'text' : 'password'}
                 value={fields.confirm}
                 onChange={handleChange}
-                placeholder="Re-enter new password"
-                className={`${inputClass} ${
-                  fields.confirm && fields.confirm !== fields.newPwd ? 'border-red-400 focus:ring-red-400' : ''
-                }`}
+                placeholder=""
+                className={`${inputClass} ${fields.confirm && fields.confirm !== fields.newPwd ? 'border-red-400 focus:ring-red-400' : ''
+                  }`}
               />
               <button type="button" onClick={() => toggleShow('confirm')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition">
                 {show.confirm ? <FiEyeOff size={16} /> : <FiEye size={16} />}

@@ -1,10 +1,13 @@
 import { useState } from "react";
-import { FiLock, FiEye, FiEyeOff, FiAlertCircle, FiTrendingUp } from "react-icons/fi";
-import { login } from "../../auth/authUtils";
+import { FiTrendingUp, FiAlertCircle, FiUser, FiLock, FiMail } from "react-icons/fi";
+import { login, signup } from "../../auth/authUtils";
 
 function Login({ onLogin }) {
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [shake, setShake] = useState(false);
@@ -14,142 +17,170 @@ function Login({ onLogin }) {
     setError("");
     setLoading(true);
 
-    // Small delay to feel like real auth
+    if (isSignUp && password !== confirmPassword) {
+      setError("Passwords do not match!");
+      setShake(true);
+      setLoading(false);
+      setTimeout(() => setShake(false), 600);
+      return;
+    }
+
+    // Small delay to simulate processing
     setTimeout(() => {
-      const success = login(password);
-      if (success) {
+      if (isSignUp) {
+        signup(email, password);
         onLogin();
       } else {
-        setLoading(false);
-        setError("Incorrect password. Please try again.");
-        setShake(true);
-        setTimeout(() => setShake(false), 600);
-        setPassword("");
+        const success = login(email, password);
+        if (success) {
+          onLogin();
+        } else {
+          setLoading(false);
+          setError("Invalid email or password.");
+          setShake(true);
+          setTimeout(() => setShake(false), 600);
+          setPassword("");
+        }
       }
     }, 700);
   };
 
+  const toggleMode = () => {
+    setIsSignUp(!isSignUp);
+    setError("");
+    setPassword("");
+    setConfirmPassword("");
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-gray-950 px-4 relative overflow-hidden">
-
-      {/* Background gradient orbs - pointer-events-none so they never block input */}
-      <div className="absolute inset-0 overflow-hidden" style={{ pointerEvents: "none", zIndex: 0 }}>
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-500/10 dark:bg-blue-500/20 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-indigo-500/10 dark:bg-indigo-500/20 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-500/5 dark:bg-purple-500/10 rounded-full blur-3xl" />
-      </div>
-
-      <div className="w-full max-w-md relative z-10">
-
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-gray-950 px-4 transition-colors duration-500">
+      
+      <div className="w-full max-w-[310px] py-4">
+        
         {/* Card */}
-        <div className={`bg-white dark:bg-gray-900 rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-800 overflow-hidden transition-all duration-300 ${shake ? "animate-shake" : ""}`}>
-
-          {/* Top gradient banner */}
-          <div className="h-2 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600" />
-
-          <div className="p-8 sm:p-10">
-
-            {/* Logo & Title */}
-            <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg shadow-blue-500/30 mb-4">
-                <FiTrendingUp className="text-white" size={28} />
+        <div className={`bg-white dark:bg-gray-900 rounded-3xl shadow-xl shadow-slate-200/40 dark:shadow-black/60 border border-slate-100 dark:border-gray-800 overflow-hidden transition-all duration-300 ${shake ? "animate-shake" : ""}`}>
+          
+          <div className="p-5 sm:p-6">
+            
+            {/* Logo */}
+            <div className="flex justify-center mb-4">
+              <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg shadow-blue-500/20 flex items-center justify-center transform hover:scale-105 transition-transform">
+                <FiTrendingUp className="text-white transform -rotate-12" size={18} />
               </div>
-              <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
-                Financial Dashboard
+            </div>
+
+            {/* Title & Subtitle */}
+            <div className="text-center mb-5">
+              <h1 className="text-base font-black text-slate-900 dark:text-white tracking-tight mb-0.5">
+                {isSignUp ? "Create Account" : "Financial Dashboard"}
               </h1>
-              <p className="text-gray-500 dark:text-gray-400 mt-1 text-sm">
-                Sign in to access your dashboard
+              <p className="text-[10px] text-slate-400 dark:text-gray-500 font-medium leading-none">
+                {isSignUp ? "Join us to manage finances" : "Sign in to your dashboard"}
               </p>
             </div>
 
             {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-2.5">
+              
+              {isSignUp && (
+                <div className="space-y-1 animate-in fade-in slide-in-from-top-1 duration-200">
+                  <label className="text-[10px] font-bold text-slate-700 dark:text-gray-300 ml-0.5 flex items-center gap-1.5 leading-none">
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    placeholder=""
+                    required={isSignUp}
+                    className="w-full px-3 py-1.5 rounded-lg bg-slate-50/50 dark:bg-gray-800/40 border border-slate-100 dark:border-gray-800 text-slate-900 dark:text-white font-medium outline-none focus:ring-1 focus:ring-blue-500/30 transition-all text-[10px]"
+                  />
+                </div>
+              )}
 
-              {/* Email (display only, no real auth) */}
-              <div className="space-y-1.5">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold text-slate-700 dark:text-gray-300 ml-0.5 flex items-center gap-1.5 leading-none">
                   Email Address
                 </label>
                 <input
                   type="email"
-                  defaultValue="admin@dashboard.com"
-                  disabled
-                  className="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 text-slate-500 dark:text-gray-400 text-sm cursor-not-allowed opacity-70"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder=""
+                  required
+                  className="w-full px-3 py-1.5 rounded-lg bg-slate-50/50 dark:bg-gray-800/40 border border-slate-100 dark:border-gray-800 text-slate-900 dark:text-white font-medium outline-none focus:ring-1 focus:ring-blue-500/30 transition-all text-[10px]"
                 />
               </div>
 
-              {/* Password */}
-              <div className="space-y-1.5">
-                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold text-slate-700 dark:text-gray-300 ml-0.5 flex items-center gap-1.5 leading-none">
                   Password
                 </label>
-                <div className="relative">
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
-                    <FiLock size={16} />
-                  </div>
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Enter your password"
-                    autoComplete="current-password"
-                    autoFocus
-                    required
-                    style={{ position: "relative", zIndex: 10 }}
-                    className={`w-full pl-10 pr-11 py-3 rounded-xl bg-slate-50 dark:bg-gray-800/50 border text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all ${
-                      error
-                        ? "border-red-400 focus:ring-red-400 bg-red-50/50 dark:bg-red-900/10"
-                        : "border-gray-200 dark:border-gray-700"
-                    }`}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword((v) => !v)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition"
-                  >
-                    {showPassword ? <FiEyeOff size={16} /> : <FiEye size={16} />}
-                  </button>
-                </div>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder=""
+                  required
+                  className="w-full px-3 py-1.5 rounded-lg bg-white dark:bg-gray-800 border-[1.5px] border-transparent ring-1 ring-blue-500/5 dark:ring-blue-500/10 focus:ring-blue-500/40 transition-all text-slate-900 dark:text-white outline-none text-[10px]"
+                />
               </div>
 
-              {/* Error Message */}
+              {isSignUp && (
+                <div className="space-y-1 animate-in fade-in slide-in-from-top-1 duration-200">
+                  <label className="text-[10px] font-bold text-slate-700 dark:text-gray-300 ml-0.5 flex items-center gap-1.5 leading-none">
+                    Confirm Password
+                  </label>
+                  <input
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder=""
+                    required={isSignUp}
+                    className="w-full px-3 py-1.5 rounded-lg bg-white dark:bg-gray-800 border-[1.5px] border-transparent ring-1 ring-blue-500/5 dark:ring-blue-500/10 focus:ring-blue-500/40 transition-all text-slate-900 dark:text-white outline-none text-[10px]"
+                  />
+                </div>
+              )}
+
               {error && (
-                <div className="flex items-center gap-2 px-4 py-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl text-red-600 dark:text-red-400 text-sm animate-in fade-in duration-200">
-                  <FiAlertCircle size={15} className="shrink-0" />
+                <div className="flex items-center gap-1.5 px-2 py-1.5 bg-red-50 dark:bg-red-900/10 text-red-600 dark:text-red-400 rounded-lg text-[8px] font-bold border border-red-100 dark:border-red-900/20 animate-in fade-in slide-in-from-top-1 duration-200 leading-tight">
+                  <FiAlertCircle size={9} />
                   {error}
                 </div>
               )}
 
-              {/* Submit */}
               <button
                 type="submit"
-                disabled={loading || !password}
-                className="w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold text-sm shadow-lg shadow-blue-500/25 transition-all hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 flex items-center justify-center gap-2"
+                disabled={loading}
+                className="w-full py-2.5 rounded-xl bg-[#5c5dff] hover:bg-[#4a4bff] text-white font-bold text-xs shadow-lg shadow-indigo-500/25 transition-all transform active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed mt-1"
               >
-                {loading ? (
-                  <>
-                    <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                    </svg>
-                    Signing in...
-                  </>
-                ) : (
-                  "Sign In"
-                )}
+                {loading ? "..." : (isSignUp ? "Create Account" : "Sign In")}
               </button>
             </form>
 
-            {/* Hint */}
-            <p className="text-center text-xs text-gray-400 dark:text-gray-600 mt-6">
-              Default password: <span className="font-mono font-semibold text-gray-500 dark:text-gray-500">admin123</span>
-            </p>
-
+            <div className="text-center mt-5">
+              {!isSignUp && (
+                <p className="text-[8px] text-slate-400 dark:text-gray-500 font-medium mb-3">
+                  Default password: <span className="text-slate-600 dark:text-gray-300 font-bold">admin123</span>
+                </p>
+              )}
+              <div className="pt-3 border-t border-slate-50 dark:border-gray-800/60">
+                <p className="text-[9px] text-slate-500 dark:text-gray-400">
+                  {isSignUp ? "Have an account?" : "Don't have one?"}
+                  <button 
+                    onClick={toggleMode}
+                    className="ml-1 text-blue-500 font-bold hover:underline"
+                  >
+                    {isSignUp ? "Sign In" : "Sign Up"}
+                  </button>
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
-        <p className="text-center text-xs text-gray-400 dark:text-gray-600 mt-6">
-          © 2026 Financial Dashboard. All rights reserved.
+        <p className="text-center text-[8px] text-slate-400 dark:text-gray-600 mt-4 font-medium italic opacity-50">
+          © 2026 Financial Dashboard.
         </p>
       </div>
 
@@ -170,3 +201,14 @@ function Login({ onLogin }) {
 }
 
 export default Login;
+
+
+
+
+
+
+
+
+
+
+

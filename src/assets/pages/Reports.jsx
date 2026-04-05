@@ -21,8 +21,10 @@ const getCategoryDesign = (category) => {
 function Reports() {
   const [filterDate, setFilterDate] = useState("all"); // 'all', 'monthly', 'yearly' (mock simplification)
   const [filterCategory, setFilterCategory] = useState("all");
+  const [visibleCount, setVisibleCount] = useState(5);
 
   // Get unique categories for the filter
+
   const categories = ["all", ...new Set(transactions.map(t => t.category))];
 
   // 1. Apply Filters
@@ -43,6 +45,10 @@ function Reports() {
 
     return filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
   }, [filterCategory, filterDate]);
+
+  const visibleRows = filteredTransactions.slice(0, visibleCount);
+  const hasMore = visibleCount < filteredTransactions.length;
+
 
   // 2. Summary Metrics Calculation
   const metrics = useMemo(() => {
@@ -276,7 +282,8 @@ function Reports() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 dark:divide-gray-800/80">
-              {filteredTransactions.map((t, i) => {
+              {visibleRows.map((t, i) => {
+
                 const design = getCategoryDesign(t.category);
                 const Icon = design.icon;
 
@@ -315,7 +322,35 @@ function Reports() {
             </div>
           )}
         </div>
+
+        {/* Show More / Show Less Footer */}
+        {filteredTransactions.length > 0 && (
+          <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
+            <span className="text-sm text-gray-500 dark:text-gray-400">
+              Showing <span className="font-semibold text-slate-800 dark:text-slate-200">{Math.min(visibleCount, filteredTransactions.length)}</span> of <span className="font-semibold text-slate-800 dark:text-slate-200">{filteredTransactions.length}</span> entries
+            </span>
+            <div className="flex gap-2">
+              {hasMore && (
+                <button
+                  onClick={() => setVisibleCount(v => v + 5)}
+                  className="px-4 py-1.5 text-sm font-semibold rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-700 transition-all shadow-sm"
+                >
+                  Show More ↓
+                </button>
+              )}
+              {visibleCount > 5 && (
+                <button
+                  onClick={() => setVisibleCount(5)}
+                  className="px-4 py-1.5 text-sm font-semibold rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-all shadow-sm"
+                >
+                  Show Less ↑
+                </button>
+              )}
+            </div>
+          </div>
+        )}
       </div>
+
 
     </div>
   );

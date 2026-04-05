@@ -104,16 +104,11 @@ function Navbar({ onLogout }) {
               </div>
               <input
                 type="text"
-                placeholder="Search analytics, transactions, or reports..."
+                placeholder="Search Analytics..."
                 value={searchVal}
                 onChange={e => setSearchVal(e.target.value)}
-                className="block w-full pl-10 pr-12 py-2.5 bg-gray-100 dark:bg-gray-800 border border-transparent focus:border-blue-500/50 dark:focus:border-blue-500/30 focus:ring-4 focus:ring-blue-500/10 dark:focus:ring-blue-500/5 rounded-2xl text-sm text-slate-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-all outline-none"
+                className="block w-full px-12 py-2.5 bg-gray-100 dark:bg-gray-800 border border-transparent focus:border-blue-500/50 dark:focus:border-blue-500/30 focus:ring-4 focus:ring-blue-500/10 dark:focus:ring-blue-500/5 rounded-2xl text-sm text-slate-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 transition-all outline-none text-center"
               />
-              <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                <kbd className="hidden sm:inline-flex items-center gap-1 h-5 px-1.5 font-sans text-[10px] font-medium text-gray-400 border border-gray-200 dark:border-gray-700 rounded-md bg-white dark:bg-gray-900 shadow-sm">
-                  <span className="text-xs">⌘</span>K
-                </kbd>
-              </div>
             </div>
           </div>
           {/* ── Right Controls ── */}
