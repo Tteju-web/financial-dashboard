@@ -108,7 +108,7 @@ function Login({ onLogin }) {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder=""
                   required
-                  className="w-full px-3 py-1.5 rounded-lg bg-slate-50/50 dark:bg-gray-800/40 border border-slate-100 dark:border-gray-800 text-slate-900 dark:text-white font-medium outline-none focus:ring-1 focus:ring-blue-500/30 transition-all text-[10px]"
+                  className="w-full px-3 py-1.5 rounded-lg bg-slate-50/50 dark:bg-gray-800/40 border border-slate-200 dark:border-gray-800 text-slate-900 dark:text-white font-medium outline-none focus:ring-1 focus:ring-blue-500/30 transition-all text-[10px]"
                 />
               </div>
 
@@ -122,7 +122,7 @@ function Login({ onLogin }) {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder=""
                   required
-                  className="w-full px-3 py-1.5 rounded-lg bg-white dark:bg-gray-800 border-[1.5px] border-transparent ring-1 ring-blue-500/5 dark:ring-blue-500/10 focus:ring-blue-500/40 transition-all text-slate-900 dark:text-white outline-none text-[10px]"
+                  className="w-full px-3 py-1.5 rounded-lg bg-white dark:bg-gray-800 border border-slate-200 dark:border-gray-700 ring-1 ring-blue-500/5 dark:ring-blue-500/10 focus:ring-blue-500/40 transition-all text-slate-900 dark:text-white outline-none text-[10px]"
                 />
               </div>
 
@@ -137,7 +137,7 @@ function Login({ onLogin }) {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder=""
                     required={isSignUp}
-                    className="w-full px-3 py-1.5 rounded-lg bg-white dark:bg-gray-800 border-[1.5px] border-transparent ring-1 ring-blue-500/5 dark:ring-blue-500/10 focus:ring-blue-500/40 transition-all text-slate-900 dark:text-white outline-none text-[10px]"
+                    className="w-full px-3 py-1.5 rounded-lg bg-white dark:bg-gray-800 border border-slate-200 dark:border-gray-700 ring-1 ring-blue-500/5 dark:ring-blue-500/10 focus:ring-blue-500/40 transition-all text-slate-900 dark:text-white outline-none text-[10px]"
                   />
                 </div>
               )}
@@ -160,9 +160,14 @@ function Login({ onLogin }) {
 
             <div className="text-center mt-5">
               {!isSignUp && (
-                <p className="text-[8px] text-slate-400 dark:text-gray-500 font-medium mb-3">
-                  Default password: <span className="text-slate-600 dark:text-gray-300 font-bold">admin123</span>
-                </p>
+                <div className="mb-3 space-y-0.5">
+                  <p className="text-[8px] text-slate-400 dark:text-gray-500 font-medium leading-none">
+                    Default Email: <span className="text-slate-600 dark:text-gray-300 font-bold">admin@dashboard.com</span>
+                  </p>
+                  <p className="text-[8px] text-slate-400 dark:text-gray-500 font-medium leading-none">
+                    Default Password: <span className="text-slate-600 dark:text-gray-300 font-bold">admin123</span>
+                  </p>
+                </div>
               )}
               <div className="pt-3 border-t border-slate-50 dark:border-gray-800/60">
                 <p className="text-[9px] text-slate-500 dark:text-gray-400">
