@@ -53,9 +53,13 @@ function Login({ onLogin }) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-gray-950 px-4 transition-colors duration-500">
+    <div className="min-h-screen flex items-center justify-center bg-[#05060f] relative overflow-hidden px-4 transition-colors duration-500">
       
-      <div className="w-full max-w-[310px] py-4">
+      {/* Background Decorative Elements */}
+      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none"></div>
+      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-indigo-600/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+      <div className="w-full max-w-[310px] py-4 relative z-10">
         
         {/* Card */}
         <div className={`bg-white dark:bg-gray-900 rounded-3xl shadow-xl shadow-slate-200/40 dark:shadow-black/60 border border-slate-100 dark:border-gray-800 overflow-hidden transition-all duration-300 ${shake ? "animate-shake" : ""}`}>
