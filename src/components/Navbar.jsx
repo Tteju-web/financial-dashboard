@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import {
   FiTrendingUp, FiBell, FiSearch, FiSun, FiMoon, FiLogOut, FiPlus, FiUser
 } from "react-icons/fi";
+import { getStoredName } from "../auth/authUtils";
 
 
 const CATEGORIES = ["Salary", "Freelance", "Food", "Shopping", "Rent", "Utilities", "Travel", "Coffee", "Dining Out", "Groceries", "Other"];
@@ -17,7 +18,7 @@ const NOTIFICATIONS = [
 
 function Navbar({ onLogout }) {
 
-  const [profile, setProfile] = useState({ name: "Papun", role: "Admin", avatar: "" });
+  const [profile, setProfile] = useState({ name: getStoredName(), role: "Admin", avatar: "" });
   const [time, setTime] = useState(new Date());
   const [darkMode, setDarkMode] = useState(() => {
     if (typeof window !== "undefined") {

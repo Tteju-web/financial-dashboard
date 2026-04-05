@@ -1,6 +1,6 @@
 import { FiUser, FiMapPin, FiShield, FiBell, FiLock, FiCamera, FiX, FiEye, FiEyeOff, FiCheckCircle, FiAlertCircle } from "react-icons/fi";
 import { useState, useEffect, useRef } from "react";
-import { getStoredPassword, setStoredPassword } from "../../auth/authUtils";
+import { getStoredPassword, setStoredPassword, getStoredName, getStoredEmail } from "../../auth/authUtils";
 
 const AVATAR_OPTIONS = [
   { id: 'cat', url: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=150&h=150&fit=crop', label: 'Cat' },
@@ -28,8 +28,8 @@ function Profile() {
 
   // Profile State
   const [profile, setProfile] = useState({
-    name: "Teju",
-    email: "teju@email.com",
+    name: getStoredName(),
+    email: getStoredEmail(),
     phone: "+1 (555) 123-4567",
     role: "Administrator",
     location: "San Francisco, CA",
@@ -49,6 +49,13 @@ function Profile() {
     const saved = localStorage.getItem("userProfile");
     if (saved) {
       setProfile(JSON.parse(saved));
+    } else {
+      // Initialize with auth data if no profile exists yet
+      setProfile(prev => ({
+        ...prev,
+        name: getStoredName(),
+        email: getStoredEmail()
+      }));
     }
     return () => { if (toastTimer.current) clearTimeout(toastTimer.current); };
   }, []);
@@ -198,7 +205,7 @@ function Profile() {
                   name="name"
                   value={profile.name}
                   onChange={handleChange}
-                  placeholder="Enter full name"
+                  placeholder=""
                   disabled={!editMode}
                   className="w-full p-3 rounded-xl bg-slate-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition disabled:opacity-70 disabled:cursor-not-allowed"
                 />
@@ -211,7 +218,7 @@ function Profile() {
                   type="email"
                   value={profile.email}
                   onChange={handleChange}
-                  placeholder="Enter email"
+                  placeholder=""
                   disabled={!editMode}
                   className="w-full p-3 rounded-xl bg-slate-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition disabled:opacity-70 disabled:cursor-not-allowed"
                 />
@@ -223,7 +230,7 @@ function Profile() {
                   name="phone"
                   value={profile.phone}
                   onChange={handleChange}
-                  placeholder="Enter phone number"
+                  placeholder=""
                   disabled={!editMode}
                   className="w-full p-3 rounded-xl bg-slate-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition disabled:opacity-70 disabled:cursor-not-allowed"
                 />
@@ -235,7 +242,7 @@ function Profile() {
                   name="role"
                   value={profile.role}
                   onChange={handleChange}
-                  placeholder="Enter role"
+                  placeholder=""
                   disabled={!editMode}
                   className="w-full p-3 rounded-xl bg-slate-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition disabled:opacity-70 disabled:cursor-not-allowed"
                 />
@@ -260,7 +267,7 @@ function Profile() {
                   name="location"
                   value={profile.location}
                   onChange={handleChange}
-                  placeholder="Enter location"
+                  placeholder=""
                   disabled={!editMode}
                   className="w-full p-3 rounded-xl bg-slate-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition disabled:opacity-70 disabled:cursor-not-allowed"
                 />

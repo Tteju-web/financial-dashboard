@@ -6,6 +6,7 @@ const AUTH_KEY = "fd_auth";
 const PWD_KEY = "fd_password";
 const EMAIL_KEY = "fd_email";
 const SESSION_KEY = "fd_session";
+const NAME_KEY = "fd_name";
 
 /** Get the stored email (or default if none set yet) */
 export function getStoredEmail() {
@@ -22,8 +23,19 @@ export function setStoredPassword(newPassword) {
   localStorage.setItem(PWD_KEY, newPassword);
 }
 
-/** Sign up: store new email and password */
-export function signup(email, password) {
+/** Get the stored name (or default if none set yet) */
+export function getStoredName() {
+  return localStorage.getItem(NAME_KEY) || "Papun";
+}
+
+/** Set a new name */
+export function setStoredName(newName) {
+  localStorage.setItem(NAME_KEY, newName);
+}
+
+/** Sign up: store new name, email and password */
+export function signup(name, email, password) {
+  localStorage.setItem(NAME_KEY, name);
   localStorage.setItem(EMAIL_KEY, email);
   localStorage.setItem(PWD_KEY, password);
   localStorage.setItem(SESSION_KEY, "true");

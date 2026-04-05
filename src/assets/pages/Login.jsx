@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FiTrendingUp, FiAlertCircle, FiUser, FiLock, FiMail } from "react-icons/fi";
+import { FiTrendingUp, FiAlertCircle, FiUser, FiLock, FiMail, FiEye, FiEyeOff } from "react-icons/fi";
 import { login, signup } from "../../auth/authUtils";
 
 function Login({ onLogin }) {
@@ -11,6 +11,8 @@ function Login({ onLogin }) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [shake, setShake] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -28,7 +30,22 @@ function Login({ onLogin }) {
     // Small delay to simulate processing
     setTimeout(() => {
       if (isSignUp) {
-        signup(email, password);
+        if (!fullName) { setError("Please enter your name."); setLoading(false); return; }
+        if (password !== confirmPassword) { setError("Passwords do not match."); setLoading(false); return; }
+        signup(fullName, email, password);
+        
+        // Initialize the profile in localStorage immediately
+        const initialProfile = {
+          name: fullName,
+          email: email,
+          phone: "+1 (555) 123-4567",
+          role: "Admin",
+          location: "Not set",
+          avatar: ""
+        };
+        localStorage.setItem("userProfile", JSON.stringify(initialProfile));
+        window.dispatchEvent(new Event("profileUpdated"));
+        
         onLogin();
       } else {
         const success = login(email, password);
@@ -120,14 +137,23 @@ function Login({ onLogin }) {
                 <label className="text-[10px] font-bold text-gray-300 ml-0.5 flex items-center gap-1.5 leading-none">
                   Password
                 </label>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder=""
-                  required
-                  className="w-full px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-white font-medium outline-none focus:ring-1 focus:ring-blue-500/50 transition-all text-[10px]"
-                />
+                <div className="relative group">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder=""
+                    required
+                    className="w-full px-3 py-1.5 pr-9 rounded-lg bg-white/5 border border-white/10 text-white font-medium outline-none focus:ring-1 focus:ring-blue-500/50 transition-all text-[10px]"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors p-1"
+                  >
+                    {showPassword ? <FiEyeOff size={11} /> : <FiEye size={11} />}
+                  </button>
+                </div>
               </div>
 
               {isSignUp && (
@@ -135,14 +161,23 @@ function Login({ onLogin }) {
                   <label className="text-[10px] font-bold text-gray-300 ml-0.5 flex items-center gap-1.5 leading-none">
                     Confirm Password
                   </label>
-                  <input
-                    type="password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder=""
-                    required={isSignUp}
-                    className="w-full px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-white font-medium outline-none focus:ring-1 focus:ring-blue-500/50 transition-all text-[10px]"
-                  />
+                  <div className="relative group">
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      placeholder=""
+                      required={isSignUp}
+                      className="w-full px-3 py-1.5 pr-9 rounded-lg bg-white/5 border border-white/10 text-white font-medium outline-none focus:ring-1 focus:ring-blue-500/50 transition-all text-[10px]"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors p-1"
+                    >
+                      {showConfirmPassword ? <FiEyeOff size={11} /> : <FiEye size={11} />}
+                    </button>
+                  </div>
                 </div>
               )}
 
