@@ -61,7 +61,14 @@ const CustomAreaTip = ({ active, payload, label }) => {
 };
 
 function Charts() {
+  const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' && window.innerWidth < 640);
   const total = pieData.reduce((sum, d) => sum + d.value, 0);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 640);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
@@ -149,8 +156,8 @@ function Charts() {
                 data={pieData}
                 cx="50%"
                 cy="50%"
-                innerRadius={75}
-                outerRadius={110}
+                innerRadius={isMobile ? 65 : 75}
+                outerRadius={isMobile ? 95 : 110}
                 paddingAngle={4}
                 dataKey="value"
                 stroke="none"
