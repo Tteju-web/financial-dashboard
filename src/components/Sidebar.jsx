@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import {
-  FiHome, FiBarChart2, FiRepeat, FiFileText, FiUser, FiZap
+  FiHome, FiBarChart2, FiRepeat, FiFileText, FiUser, FiZap, FiX
 } from "react-icons/fi";
 import UpgradeModal from "./UpgradeModal";
 
@@ -15,13 +15,21 @@ const NAV_LINKS = [
   { to: "/profile",      label: "Profile",       Icon: FiUser },
 ];
 
-function Sidebar() {
+function Sidebar({ onClose }) {
   const location = useLocation();
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
 
 
   return (
-    <div className="w-full h-full bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col">
+    <div className="w-full h-full bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col relative">
+
+      {/* ── Mobile Close Button ── */}
+      <button 
+        onClick={onClose}
+        className="md:hidden absolute right-4 top-4 p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+      >
+        <FiX size={20} />
+      </button>
 
       {/* ── Section Label ── */}
       <div className="px-4 pt-5 pb-2">
@@ -31,13 +39,14 @@ function Sidebar() {
       </div>
 
       {/* ── Nav Links ── */}
-      <ul className="px-3 space-y-0.5 flex-1">
+      <ul className="px-3 space-y-0.5 flex-1 mt-2">
         {NAV_LINKS.map(({ to, label, Icon }) => {
           const active = location.pathname === to;
           return (
             <li key={to}>
               <Link
                 to={to}
+                onClick={onClose}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-150 font-medium text-sm relative ${
                   active
                     ? "bg-blue-500/10 dark:bg-blue-500/15 text-blue-600 dark:text-blue-400"

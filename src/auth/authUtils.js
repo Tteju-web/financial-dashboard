@@ -48,7 +48,12 @@ export function isLoggedIn() {
 
 /** Login: validate email and password and set session */
 export function login(email, password) {
-  if (email === getStoredEmail() && password === getStoredPassword()) {
+  const normalizedEmail = email.trim().toLowerCase();
+  const storedEmail = getStoredEmail().trim().toLowerCase();
+  const trimmedPassword = password.trim();
+  const storedPassword = getStoredPassword().trim();
+
+  if (normalizedEmail === storedEmail && trimmedPassword === storedPassword) {
     localStorage.setItem(SESSION_KEY, "true");
     return true;
   }
